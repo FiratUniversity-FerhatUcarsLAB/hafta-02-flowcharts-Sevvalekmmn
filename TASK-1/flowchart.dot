@@ -1,7 +1,4 @@
-İsim Soyisim: Şevval Ekmen
-Okul No:250541080
-
-  digraph ATM {
+    digraph ATM {
     rankdir=TB;
     node [fontname="Arial"];
 
