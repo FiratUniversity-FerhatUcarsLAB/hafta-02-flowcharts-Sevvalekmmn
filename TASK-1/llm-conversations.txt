@@ -1,0 +1,149 @@
+İsim Soyisim:Şevval Ekmen
+Okul No:250541080
+
+ATM para çekme sistemi için detaylı pseudocode yazmanı istiyorum. Şunları içermeli:PIN doğrulama (3 hak), bakiye kontrolü, tutar kontrolü, işlem tekrarı seçeneği. Tüm adımları başla, oku, yaz, eğer-ise,döngü yapılarıyla yaz
+
+ChatGPT:
+Elbette! İstediğin kurallara tamamen uyarak Başla, Oku, Yaz, Eğer-İse, Döngü yapılarıyla yazılmış detaylı ATM Para Çekme Sistemi Pseudocode aşağıdadır:
+
+✅ ATM Para Çekme Sistemi – Pseudocode
+
+BAŞLA
+
+  bakiye ← 5000            // Varsayılan bakiye
+
+  TEKRARLA
+
+    kalan_hak ← 3
+
+    // PIN DOĞRULAMA
+    DÖNGÜ kalan_hak > 0 İKEN
+        YAZ "Lütfen PIN kodunuzu girin:"
+        OKU girilen_pin
+
+        EĞER girilen_pin = 1234 İSE
+            YAZ "PIN doğrulandı."
+            ÇIK PIN_DOGRULAMA
+        DEĞİLSE
+            kalan_hak ← kalan_hak - 1
+            YAZ "Hatalı PIN. Kalan deneme hakkınız: ", kalan_hak
+        SON
+    SON_DÖNGÜ
+
+    EĞER kalan_hak = 0 İSE
+        YAZ "3 kez hatalı PIN girildi. Kart bloke edildi."
+        ÇIK SISTEMDEN
+    SON
+
+    // PARA ÇEKME İŞLEMİ
+    DÖNGÜ TRUE
+        YAZ "Çekmek istediğiniz tutarı girin:"
+        OKU tutar
+
+        EĞER tutar ≤ 0 İSE
+            YAZ "Geçersiz tutar! Pozitif bir değer girin."
+        DEĞİLSE EĞER tutar MOD 10 ≠ 0 İSE
+            YAZ "Tutar 10 TL ve katları olmalıdır."
+        DEĞİLSE EĞER tutar > bakiye İSE
+            YAZ "Yetersiz bakiye. Mevcut bakiye: ", bakiye
+        DEĞİLSE
+            bakiye ← bakiye - tutar
+            YAZ tutar, " TL çekildi. Kalan bakiye: ", bakiye
+            ÇIK PARA_CEKME
+        SON
+    SON_DÖNGÜ
+
+    // TEKRAR İŞLEM SEÇENEĞİ
+    YAZ "Başka bir işlem yapmak ister misiniz? (E/H)"
+    OKU cevap
+
+    EĞER cevap = "H" VEYA cevap = "h" İSE
+        ÇIK TEKRAR_ISLEM
+    SON
+
+  SON_TEKRARLA
+
+TEKRAR_ISLEM:
+SISTEMDEN:
+YAZ "İyi günler dileriz."
+
+BİTİR
+
+Hazırsan bu pseudocode’u Graphviz akış diyagramına, Mermaid, ya da C diline / Python’a da çevirebilirim.
+👉 Bir sonraki adım ne olsun?
+* "Graphviz'e çevir"
+* "Akış şeması çiz"
+* "Python koduna dönüştür"
+Diye belirtmen yeterli 😊
+
+Şunu dedin:
+Bu pseudocode'u Graphviz DOT diline çevir
+
+ChatGPT:
+Elbette! Daha önceki pseudocode’unu standart ve Graphviz ile sorunsuz çalışan şekillerle DOT formatınadönüştürüyorum.
+
+✅ Kullanılan Şekil Standartları (Graphviz ile %100 uyumlu olacak şekilde)
+Eleman Türü	Graphviz Shape
+Başla / Bitir	ellipse
+Girdi / Çıktı	box
+İşlem	box
+Karar (Eğer-İse)	diamond
+Not: Önceden “parallelogram” kullanmıştın ama Graphviz’in çoğu sürümünde bu yerleşik değil. Bu nedenle girdi/çıktı için de box kullandım ki hata vermesin.
+
+✅ Graphviz DOT Kodun (Hazır Çalıştırılabilir)
+
+digraph ATM {
+    rankdir=TB;
+    node [fontname="Arial"];
+
+    Start [label="BAŞLA", shape=ellipse];
+    SetBalance [label="bakiye ← 5000", shape=box];
+    SetTries [label="kalan_hak ← 3", shape=box];
+    EnterPIN [label="PIN gir", shape=box];
+    CheckPIN [label="PIN doğru mu?", shape=diamond];
+    WrongPIN [label="kalan_hak ← kalan_hak - 1", shape=box];
+    ShowTries [label="Hatalı PIN\nKalan hak:", shape=box];
+    CheckTries [label="kalan_hak = 0 mı?", shape=diamond];
+    BlockCard [label="Kart bloke edildi", shape=box];
+    End [label="BİTİR", shape=ellipse];
+
+    EnterAmount [label="Tutar gir", shape=box];
+    CheckPositive [label="tutar > 0?", shape=diamond];
+    InvalidAmount [label="Geçersiz tutar", shape=box];
+    CheckMultiple10 [label="tutar % 10 = 0?", shape=diamond];
+    InvalidMultiple [label="10 TL katı değil", shape=box];
+    CheckBalance [label="tutar ≤ bakiye?", shape=diamond];
+    NotEnoughBalance [label="Yetersiz bakiye", shape=box];
+    Withdraw [label="bakiye ← bakiye - tutar", shape=box];
+    ShowBalance [label="Tutar çekildi\nYeni bakiye:", shape=box];
+    RepeatAsk [label="Tekrar işlem? (E/H)", shape=box];
+    RepeatCheck [label="Cevap = E?", shape=diamond];
+
+    // Flow
+    Start -> SetBalance -> SetTries -> EnterPIN -> CheckPIN;
+    CheckPIN -> EnterAmount [label="Evet"];
+    CheckPIN -> WrongPIN [label="Hayır"];
+    WrongPIN -> ShowTries -> CheckTries;
+    CheckTries -> BlockCard [label="Evet"];
+    BlockCard -> End;
+    CheckTries -> EnterPIN [label="Hayır"];
+
+    EnterAmount -> CheckPositive;
+    CheckPositive -> CheckMultiple10 [label="Evet"];
+    CheckPositive -> InvalidAmount [label="Hayır"];
+    InvalidAmount -> EnterAmount;
+
+    CheckMultiple10 -> CheckBalance [label="Evet"];
+    CheckMultiple10 -> InvalidMultiple [label="Hayır"];
+    InvalidMultiple -> EnterAmount;
+
+    CheckBalance -> Withdraw [label="Evet"];
+    CheckBalance -> NotEnoughBalance [label="Hayır"];
+    NotEnoughBalance -> EnterAmount;
+
+    Withdraw -> ShowBalance -> RepeatAsk -> RepeatCheck;
+    RepeatCheck -> EnterAmount [label="Evet"];
+    RepeatCheck -> End [label="Hayır"];
+}
+
+
