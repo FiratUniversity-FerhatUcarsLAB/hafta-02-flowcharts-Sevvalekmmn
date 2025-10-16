@@ -1,0 +1,104 @@
+loT tabanlı akıllı ev güvenlik sisteminin alarm ve bildirim süreçlerini
+modelleyin.
+Sistem Gereksinimleri:
+Sistem aktif mi kontrolu (koşul)
+Sensor okuma dongusu (döngu - surekli)
+Hareket sens¨or¨u kontrol¨u (kosul)
+Kapı/pencere sensoru kontrolu (kosul)
+Kamera aktivasyonu (kosul)
+Yanlıs alarm kontrolu (ev sahibi evde mi?) (kosul)
+Alarm seviyesi belirleme (1-dusuk, 2-orta, 3-yuksek) (kosul)
+Bildirim gonderme (SMS + App + Email)
+Bekle ve tekrar kontrol et (d¨ong¨u)
+Alarm sıfırlama veya devam ettirme (ko¸sul)                                                  bana bunu pseudocode olarak yaz
+Tabii! İstediğiniz sistem gereksinimlerine göre IoT tabanlı akıllı ev güvenlik sistemini pseudocode olarak aşağıdaki gibi modelleyebiliriz:
+Başla
+    Eğer Sistem_Aktif_mi = EVET ise
+        Döngü Başla (Sürekli)
+            Sensör_Verisi = Sensör_Oku()
+            
+            Eğer Hareket_Sensörü = Tespit_Etti ise
+                Kamera_Aktive_Et()
+            Bitir Eğer
+
+            Eğer Kapı_Pencere_Sensörü = Açık ise
+                Kamera_Aktive_Et()
+            Bitir Eğer
+
+            Eğer Ev_Sahibi_Evde_mi = HAYIR ise
+                Alarm_Seviyesi = Belirle_Alarm_Seviyesi(Sensör_Verisi)
+                Bildirim_Gonder(Alarm_Seviyesi, SMS)
+                Bildirim_Gonder(Alarm_Seviyesi, App)
+                Bildirim_Gonder(Alarm_Seviyesi, Email)
+            Bitir Eğer
+
+            Bekle(Belirli_Süre)
+            
+            Eğer Alarm_Sıfırla_mı = EVET ise
+                Alarmı_Sıfırla()
+            Bitir Eğer
+
+        Döngü Bitir
+    Aksi_Halde
+        Sistem_Kapalı_Mesajı()
+    Bitir Eğer
+Bitir
+💡 Notlar:
+Sensör_Oku() tüm sensörlerden veri toplar.
+Belirle_Alarm_Seviyesi() sensör verisine göre 1, 2 veya 3 olarak alarm seviyesi belirler.
+Bildirim_Gonder() fonksiyonu üç farklı kanal üzerinden uyarı gönderir.
+Döngü sürekli çalışır ve bekleme süresi sensör kontrolü aralıklarını belirler.
+İstersen bunu Graphviz DOT formatında bir akış diyagramına da çevirebilirim; görselleştirmesi ödev için çok işine yarar. Bunu yapayım mı?
+bana bunu dota cevir
+digraph SmartHomeSecurity {
+    rankdir=TB;
+    node [shape=box];
+
+    Basla [label="Başla", shape=oval];
+    SistemKontrol [label="Sistem Aktif mi?", shape=diamond];
+    SensorOku [label="Sensör Verisini Oku"];
+    HareketKontrol [label="Hareket Sensörü Tespit Etti mi?", shape=diamond];
+    KapiPencereKontrol [label="Kapı/Pencere Açık mı?", shape=diamond];
+    KameraAktif [label="Kamerayı Aktive Et"];
+    EvdeMi [label="Ev Sahibi Evde mi?", shape=diamond];
+    AlarmSeviyesi [label="Alarm Seviyesini Belirle"];
+    BildirimSMS [label="SMS Bildirimi Gönder", shape=parallelogram];
+    BildirimApp [label="App Bildirimi Gönder", shape=parallelogram];
+    BildirimEmail [label="Email Bildirimi Gönder", shape=parallelogram];
+    Bekle [label="Bekle ve Tekrar Kontrol Et"];
+    AlarmSifirla [label="Alarm Sıfırla mı?", shape=diamond];
+    AlarmSifirlama [label="Alarmı Sıfırla"];
+    SistemKapali [label="Sistem Kapalı", shape=parallelogram];
+    Bitir [label="Bitir", shape=oval];
+
+    Basla -> SistemKontrol;
+    SistemKontrol -> SensorOku [label="EVET"];
+    SistemKontrol -> SistemKapali [label="HAYIR"];
+    SistemKapali -> Bitir;
+
+    SensorOku -> HareketKontrol;
+    HareketKontrol -> KameraAktif [label="EVET"];
+    HareketKontrol -> KapiPencereKontrol [label="HAYIR"];
+
+    KapiPencereKontrol -> KameraAktif [label="EVET"];
+    KapiPencereKontrol -> EvdeMi [label="HAYIR"];
+
+    KameraAktif -> EvdeMi;
+
+    EvdeMi -> AlarmSeviyesi [label="HAYIR"];
+    EvdeMi -> Bekle [label="EVET"];
+
+    AlarmSeviyesi -> BildirimSMS;
+    BildirimSMS -> BildirimApp;
+    BildirimApp -> BildirimEmail;
+    BildirimEmail -> Bekle;
+
+    Bekle -> AlarmSifirla;
+    AlarmSifirla -> AlarmSifirlama [label="EVET"];
+    AlarmSifirla -> SensorOku [label="HAYIR"];
+    AlarmSifirlama -> SensorOku;
+}
+
+
+
+
