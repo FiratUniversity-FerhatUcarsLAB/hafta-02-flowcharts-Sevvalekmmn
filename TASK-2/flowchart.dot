@@ -1,0 +1,17 @@
+digraph ECommerceFlow {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+
+    start [label="Başla"];
+    login [label="Kullanıcı Giriş Yapmış Mı?", shape=diamond];
+    login_yes [label="Devam Et"];
+    login_no [label="Giriş Yap / Kayıt Ol"];
+
+    browse [label="Ürün Kategorileri Arasında Gez"];
+    select_product [label="Ürün Seçildi Mi?", shape=diamond];
+    check_stock [label="Stok Var Mı?", shape=diamond];
+    add_to_cart [label="Sepete Ekle"];
+    no_stock [label="Stok Yok - Uyarı Göster"];
+
+    continue_browsing [label="Gezinmeye Devam?", shape=diamond];
+    view_cart [label="Sepeti G]()_
