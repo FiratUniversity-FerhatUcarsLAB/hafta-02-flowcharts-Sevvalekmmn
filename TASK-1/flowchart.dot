@@ -1,0 +1,56 @@
+İsim Soyisim: Şevval Ekmen
+Okul No:250541080
+
+  digraph ATM {
+    rankdir=TB;
+    node [fontname="Arial"];
+
+    Start [label="BAŞLA", shape=ellipse];
+    SetBalance [label="bakiye ← 5000", shape=box];
+    SetTries [label="kalan_hak ← 3", shape=box];
+    EnterPIN [label="PIN gir", shape=box];
+    CheckPIN [label="PIN doğru mu?", shape=diamond];
+    WrongPIN [label="kalan_hak ← kalan_hak - 1", shape=box];
+    ShowTries [label="Hatalı PIN\nKalan hak:", shape=box];
+    CheckTries [label="kalan_hak = 0 mı?", shape=diamond];
+    BlockCard [label="Kart bloke edildi", shape=box];
+    End [label="BİTİR", shape=ellipse];
+
+    EnterAmount [label="Tutar gir", shape=box];
+    CheckPositive [label="tutar > 0?", shape=diamond];
+    InvalidAmount [label="Geçersiz tutar", shape=box];
+    CheckMultiple10 [label="tutar % 10 = 0?", shape=diamond];
+    InvalidMultiple [label="10 TL katı değil", shape=box];
+    CheckBalance [label="tutar ≤ bakiye?", shape=diamond];
+    NotEnoughBalance [label="Yetersiz bakiye", shape=box];
+    Withdraw [label="bakiye ← bakiye - tutar", shape=box];
+    ShowBalance [label="Tutar çekildi\nYeni bakiye:", shape=box];
+    RepeatAsk [label="Tekrar işlem? (E/H)", shape=box];
+    RepeatCheck [label="Cevap = E?", shape=diamond];
+
+    // Flow
+    Start -> SetBalance -> SetTries -> EnterPIN -> CheckPIN;
+    CheckPIN -> EnterAmount [label="Evet"];
+    CheckPIN -> WrongPIN [label="Hayır"];
+    WrongPIN -> ShowTries -> CheckTries;
+    CheckTries -> BlockCard [label="Evet"];
+    BlockCard -> End;
+    CheckTries -> EnterPIN [label="Hayır"];
+
+    EnterAmount -> CheckPositive;
+    CheckPositive -> CheckMultiple10 [label="Evet"];
+    CheckPositive -> InvalidAmount [label="Hayır"];
+    InvalidAmount -> EnterAmount;
+
+    CheckMultiple10 -> CheckBalance [label="Evet"];
+    CheckMultiple10 -> InvalidMultiple [label="Hayır"];
+    InvalidMultiple -> EnterAmount;
+
+    CheckBalance -> Withdraw [label="Evet"];
+    CheckBalance -> NotEnoughBalance [label="Hayır"];
+    NotEnoughBalance -> EnterAmount;
+
+    Withdraw -> ShowBalance -> RepeatAsk -> RepeatCheck;
+    RepeatCheck -> EnterAmount [label="Evet"];
+    RepeatCheck -> End [label="Hayır"];
+}
