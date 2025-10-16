@@ -1,3 +1,5 @@
+İsim Soyisim:Şevval Ekmen
+Öğrenci No:250541080
 Bu ödevde, bir öğrencinin ders kayıt sisteminin tüm kontrolleri ve kuralları modelledik.
 Sistem, öğrenci girişi ile başlıyor ve ders listesini döngü ile görüntülüyor.
 Her ders için kontenjan, ön koşul, zaman çakışması ve kredi limiti kontrolleri yapılıyor.
