@@ -1,0 +1,64 @@
+digraph HastaneRandevu {
+    rankdir=TB;
+    node [shape=oval];
+    Basla [label="BAŞLA"];
+    Bitir [label="BİTİR"];
+    
+    node [shape=parallelogram];
+    TC_Girdi [label="TC No giriniz"];
+    Islem_Girdi [label="İşlem seçin:\n1-Randevu Al\n2-Tahlil Sonucu Gör"];
+    Poliklinik_Girdi [label="Poliklinik seçiniz"];
+    Doktor_Girdi [label="Doktor seçiniz"];
+    Saat_Girdi [label="Uygun saat seçiniz"];
+    Tekrar_Islem [label="Başka işlem yapmak ister misiniz? E/H"];
+    PDF_Secim [label="PDF indirmek ister misiniz? E/H"];
+    
+    node [shape=box];
+    Randevu_Onay [label="Randevu onaylandı"];
+    SMS_Gonder [label="SMS gönderildi"];
+    PDF_Indir [label="PDF indir"];
+    Sonuc_Goster [label="Tahlil sonucu görüntülendi"];
+    Sonuc_Bekle [label="Sonuç henüz hazır değil, bekleyin"];
+    Tahlil_Yok [label="Tahlil kaydı bulunamadı"];
+    Saat_Yok [label="Başka saat seçin"];
+    
+    node [shape=diamond];
+    Islem_Kontrol [label="İşlem 1 mi?"];
+    Saat_Uygun [label="Saat uygun mu?"];
+    Tahlil_Var [label="Tahlil var mı?"];
+    Sonuc_Hazir [label="Sonuç hazır mı?"];
+    PDF_Kontrol [label="PDF indirilsin mi?"];
+    Tekrar_Kontrol [label="Başka işlem yapılacak mı?"];
+    
+    Basla -> TC_Girdi;
+    TC_Girdi -> Islem_Girdi;
+    
+    Islem_Girdi -> Islem_Kontrol;
+    Islem_Kontrol -> Poliklinik_Girdi [label="EVET"];
+    Islem_Kontrol -> Tahlil_Var [label="HAYIR"];
+    
+    // Randevu Modülü
+    Poliklinik_Girdi -> Doktor_Girdi;
+    Doktor_Girdi -> Saat_Girdi;
+    Saat_Girdi -> Saat_Uygun;
+    Saat_Uygun -> Randevu_Onay [label="EVET"];
+    Saat_Uygun -> Saat_Yok [label="HAYIR"];
+    Saat_Yok -> Saat_Girdi;
+    Randevu_Onay -> SMS_Gonder;
+    SMS_Gonder -> Tekrar_Islem;
+    
+    // Tahlil Modülü
+    Tahlil_Var -> Sonuc_Hazir [label="EVET"];
+    Tahlil_Var -> Tahlil_Yok [label="HAYIR"];
+    Sonuc_Hazir -> Sonuc_Goster [label="EVET"];
+    Sonuc_Hazir -> Sonuc_Bekle [label="HAYIR"];
+    Sonuc_Goster -> PDF_Kontrol;
+    PDF_Kontrol -> PDF_Indir [label="E"];
+    PDF_Kontrol -> Tekrar_Islem [label="H"];
+    Tahlil_Yok -> Tekrar_Islem;
+    Sonuc_Bekle -> Tekrar_Islem;
+    
+    Tekrar_Islem -> Tekrar_Kontrol;
+    Tekrar_Kontrol -> Islem_Girdi [label="E"];
+    Tekrar_Kontrol -> Bitir [label="H"];
+}
