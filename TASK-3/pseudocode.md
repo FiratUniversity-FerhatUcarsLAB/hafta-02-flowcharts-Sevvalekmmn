@@ -1,26 +1,40 @@
 BAŞLA
+    Hasta_TC = Girdi("TC No giriniz:")
+    
+    TEKRAR
+        Islem = Girdi("İşlem seçin: 1-Randevu Al, 2-Tahlil Sonucu Gör")
+        
+        EĞER Islem == 1 O ZAMAN
+            // Randevu Modülü
+            Poliklinik = Girdi("Poliklinik seçiniz:")
+            Doktor = Girdi("Doktor seçiniz:")
+            
+            TEKRAR
+                Saat = Girdi("Uygun saat seçiniz:")
+                EĞER Saat uygun mu? EVET
+                    Randevu_Onayi = Onay("Randevu onaylansın mı?")
+                    GÖNDER SMS("Randevu bilgileri gönderildi")
+                    DUR
+                HAYIR
+                    Mesaj("Lütfen başka bir saat seçin")
+            BITIR
+            
+        HAYIR EĞER Islem == 2 O ZAMAN
+            // Tahlil Modülü
+            EĞER Tahlil var mı? EVET
+                EĞER Sonuç hazır mı? EVET
+                    Goster("Tahlil sonucu görüntülendi")
+                    Secim = Girdi("PDF indirmek ister misiniz? E/H")
+                    EĞER Secim == "E" O ZAMAN
+                        PDF_Indir()
+                    BITIR
+                HAYIR
+                    Mesaj("Sonuç henüz hazır değil, bekleyin")
+            HAYIR
+                Mesaj("Tahlil kaydı bulunamadı")
+        BITIR
 
-Kullanıcıdan T.C. Kimlik No ve Şifre al
-Eğer kimlik doğrulama başarılı ise
-    Poliklinik listesini göster
-    Kullanıcıdan poliklinik seçmesini iste
-    
-    Seçilen polikliniğe ait doktorları göster
-    Kullanıcıdan doktor seçmesini iste
-    
-    Seçilen doktora ait uygun randevu saatlerini göster
-    Kullanıcıdan saat seçmesini iste
-    
-    Randevu bilgilerini özet olarak göster (Poliklinik, Doktor, Saat)
-    Kullanıcıdan ONAY iste
-    
-    Eğer onay verildiyse
-        Randevuyu kaydet
-        Kullanıcının telefon numarasına SMS gönder
-        "Randevunuz başarıyla oluşturuldu" yazdır
-    Değilse
-        "Randevu iptal edildi" yazdır
-Aksi halde
-    "Kimlik doğrulama başarısız" yazdır
+        Tekrar = Girdi("Başka işlem yapmak ister misiniz? E/H")
+    TEKRAR EĞER Tekrar == "E"
 
-BİTİR
+BITIR
