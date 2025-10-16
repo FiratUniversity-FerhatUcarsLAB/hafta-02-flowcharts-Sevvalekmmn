@@ -1,0 +1,172 @@
+Sistem Gereksinimleri:
+Kullanıcı giriş kontrolü (koşul)
+¨
+Ürün kategorileri arasında gezinme (döngü)
+¨
+Ürün sepete ekleme
+Stok kontrolü (koşul)
+Sepeti görüntüleme ve düzenleme (döngü)
+˙
+Indirim kodu uygulanabilir (koşul)
+Minimum 50 TL kontrolü (koşul)
+Kargo ücreti hesaplama (koşul: ¿200 TL ücretsiz)
+¨
+Odeme yöntemi seçimi (koşul)
+Siparis onayı  
+Bunu bana pseudocode olarak yaz
+Elbette! Verdiğin sistem gereksinimlerine göre e-ticaret sipariş süreci için pseudocode aşağıdaki gibidir:
+BAŞLA
+
+// Kullanıcı Giriş Kontrolü
+Kullanıcı_Giriş_Yapmış_Mı?
+EĞER EVET ise
+    Devam Et
+DEĞİLSE
+    Giriş_Yap_Veya_Kayıt_Ol
+
+// Ürün Gezinme Döngüsü
+TEKRAR
+    Ürün_Kategorisi_Göster
+    Kullanıcı_Bir_Ürün_Seçti_Mi?
+    EĞER EVET ise
+        // Sepete Ekleme
+        EĞER Stok_Varsa ise
+            Sepete_Ekle(Ürün)
+        DEĞİLSE
+            "Stokta Yok" Mesajı Göster
+    Ürün_Gezinmeye_Devam_Edilsin_Mi?
+    EĞER HAYIR ise
+        ÇIKIŞ
+SONA_KADAR
+
+// Sepet Görüntüleme ve Düzenleme
+TEKRAR
+    Sepeti_Göster
+    Kullanıcı_Değişiklik_Yapmak_İstiyor_Mu?
+    EĞER EVET ise
+        Ürün_Miktarı_Arttır_Azalt_Veya_Sil
+    DEĞİLSE
+        ÇIKIŞ
+SONA_KADAR
+
+// İndirim Kodu Kontrolü
+Kullanıcı_Indirim_Kodu_Girdi_Mi?
+EĞER EVET ise
+    EĞER Kod_Geçerli ise
+        İndirimi_Uygula
+    DEĞİLSE
+        "Geçersiz Kod" Göster
+
+// Minimum 50 TL Kontrolü
+EĞER Sepet_Toplam >= 50 TL ise
+    Devam Et
+DEĞİLSE
+    "Minimum 50 TL Alışveriş Gerekli" Göster
+    ALIŞVERİŞE GERİ DÖN
+
+// Kargo Ücreti
+EĞER Sepet_Toplam >= 200 TL ise
+    Kargo_Ücretsiz
+DEĞİLSE
+    Kargo_Ücreti_Ekle
+
+// Ödeme Yöntemi
+Ödeme_Yöntemi_Seç
+EĞER Kart ise
+    Kart_Ödeme_Al
+EĞER Kapıda ise
+    Kapıda_Ödeme_Kaydet
+EĞER Havale ise
+    IBAN_Bilgisi_Göster
+
+// Sipariş Onayı
+Sipariş_Onayla
+"Teşekkürler! Siparişiniz Alındı" Mesajı Göster
+
+BİTİR
+Şunu dedin:
+Pseudocode’u Graphviz DOT formatına çevir. rankdir=TB kullan. Karar
+noktalarında EVET/HAYIR etiketlerini unutma.
+Elbette! Aşağıda verdiğin pseudocode’un Graphviz DOT formatına dönüştürülmüş hali yer alıyor.
+➡ Notlar:
+rankdir=TB (Top → Bottom)
+Karar düğümleri elmas (diamond) olarak ayarlandı.
+EVET / HAYIR etiketli dallanmalar eklendi.
+digraph ECommerceFlow {
+    rankdir=TB;
+    node [shape=box, style=rounded];
+
+    start [label="Başla"];
+    login [label="Kullanıcı Giriş Yapmış Mı?", shape=diamond];
+    login_yes [label="Devam Et"];
+    login_no [label="Giriş Yap / Kayıt Ol"];
+
+    browse [label="Ürün Kategorileri Arasında Gez"];
+    select_product [label="Ürün Seçildi Mi?", shape=diamond];
+    check_stock [label="Stok Var Mı?", shape=diamond];
+    add_to_cart [label="Sepete Ekle"];
+    no_stock [label="Stok Yok - Uyarı Göster"];
+
+    continue_browsing [label="Gezinmeye Devam?", shape=diamond];
+    view_cart [label="Sepeti Göster"];
+    edit_cart [label="Değişiklik Yapmak İstiyor Mu?", shape=diamond];
+    modify_cart [label="Ürün Miktarı Değiştir / Sil"];
+
+    promo_check [label="İndirim Kodu Girildi Mi?", shape=diamond];
+    promo_valid [label="Kod Geçerli"];
+    promo_invalid [label="Geçersiz Kod - Uyarı"];
+
+    min_check [label="Sepet >= 50 TL?", shape=diamond];
+    min_fail [label="Minimum 50 TL Gerekli - Geri Dön"];
+
+    cargo_check [label="Sepet >= 200 TL?", shape=diamond];
+    free_cargo [label="Kargo Ücretsiz"];
+    add_cargo [label="Kargo Ücreti Ekle"];
+
+    payment [label="Ödeme Yöntemi Seç"];
+    confirm [label="Sipariş Onayı"];
+    end [label="BİTİR"];
+
+    // Connections
+    start -> login;
+    login -> login_yes [label="EVET"];
+    login -> login_no [label="HAYIR"];
+    login_yes -> browse;
+    login_no -> browse;
+
+    browse -> select_product;
+    select_product -> check_stock [label="EVET"];
+    select_product -> continue_browsing [label="HAYIR"];
+
+    check_stock -> add_to_cart [label="EVET"];
+    check_stock -> no_stock [label="HAYIR"];
+    no_stock -> continue_browsing;
+
+    add_to_cart -> continue_browsing;
+    continue_browsing -> browse [label="EVET"];
+    continue_browsing -> view_cart [label="HAYIR"];
+
+    view_cart -> edit_cart;
+    edit_cart -> modify_cart [label="EVET"];
+    modify_cart -> view_cart;
+    edit_cart -> promo_check [label="HAYIR"];
+
+    promo_check -> promo_valid [label="EVET"];
+    promo_check -> promo_invalid [label="HAYIR"];
+    promo_invalid -> promo_check;
+    promo_valid -> min_check;
+
+    min_check -> cargo_check [label="EVET"];
+    min_check -> min_fail [label="HAYIR"];
+    min_fail -> view_cart;
+
+    cargo_check -> free_cargo [label="EVET"];
+    cargo_check -> add_cargo [label="HAYIR"];
+    free_cargo -> payment;
+    add_cargo -> payment;
+
+    payment -> confirm;
+    confirm -> end;
+}
+
+
