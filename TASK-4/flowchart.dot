@@ -1,0 +1,16 @@
+digraph DersKayit {
+    rankdir=TB;
+    node [shape=box];
+
+    Basla [shape=oval, label="Başla"];
+    OgrenciGiris [shape=parallelogram, label="Öğrenci No ve Şifre Girişi"];
+    KontrolGiris [shape=diamond, label="Giriş Bilgileri Doğru mu?"];
+    DersListesi [shape=box, label="Ders Listesini Göster"];
+    DersSecimi [shape=box, label="Ders Seçimi (Ekle/Çıkar)"];
+    KontenjanKontrol [shape=diamond, label="Kontenjan Dolmuş mu?"];
+    OnKosulKontrol [shape=diamond, label="Ön Koşul Dersi Alınmış mı?"];
+    ZamanCakis [shape=diamond, label="Zaman Çakışması Var mı?"];
+    KrediKontrol [shape=diamond, label="Kredi Limiti Aşılıyor mu?"];
+    GPAKontrol [shape=diamond, label="GPA < 2.5 mi?"];
+    DanismanOnayi [shape=parallelogram, label="Danışman Onayı Al"];
+    DersEkle [shape=box, label="Dersi E]()
