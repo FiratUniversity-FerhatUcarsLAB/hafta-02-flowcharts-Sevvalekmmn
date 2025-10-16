@@ -1,0 +1,48 @@
+digraph SmartHomeSecurity {
+    rankdir=TB;
+    node [shape=box];
+
+    Basla [label="Başla", shape=oval];
+    SistemKontrol [label="Sistem Aktif mi?", shape=diamond];
+    SensorOku [label="Sensör Verisini Oku"];
+    HareketKontrol [label="Hareket Sensörü Tespit Etti mi?", shape=diamond];
+    KapiPencereKontrol [label="Kapı/Pencere Açık mı?", shape=diamond];
+    KameraAktif [label="Kamerayı Aktive Et"];
+    EvdeMi [label="Ev Sahibi Evde mi?", shape=diamond];
+    AlarmSeviyesi [label="Alarm Seviyesini Belirle"];
+    BildirimSMS [label="SMS Bildirimi Gönder", shape=parallelogram];
+    BildirimApp [label="App Bildirimi Gönder", shape=parallelogram];
+    BildirimEmail [label="Email Bildirimi Gönder", shape=parallelogram];
+    Bekle [label="Bekle ve Tekrar Kontrol Et"];
+    AlarmSifirla [label="Alarm Sıfırla mı?", shape=diamond];
+    AlarmSifirlama [label="Alarmı Sıfırla"];
+    SistemKapali [label="Sistem Kapalı", shape=parallelogram];
+    Bitir [label="Bitir", shape=oval];
+
+    Basla -> SistemKontrol;
+    SistemKontrol -> SensorOku [label="EVET"];
+    SistemKontrol -> SistemKapali [label="HAYIR"];
+    SistemKapali -> Bitir;
+
+    SensorOku -> HareketKontrol;
+    HareketKontrol -> KameraAktif [label="EVET"];
+    HareketKontrol -> KapiPencereKontrol [label="HAYIR"];
+
+    KapiPencereKontrol -> KameraAktif [label="EVET"];
+    KapiPencereKontrol -> EvdeMi [label="HAYIR"];
+
+    KameraAktif -> EvdeMi;
+
+    EvdeMi -> AlarmSeviyesi [label="HAYIR"];
+    EvdeMi -> Bekle [label="EVET"];
+
+    AlarmSeviyesi -> BildirimSMS;
+    BildirimSMS -> BildirimApp;
+    BildirimApp -> BildirimEmail;
+    BildirimEmail -> Bekle;
+
+    Bekle -> AlarmSifirla;
+    AlarmSifirla -> AlarmSifirlama [label="EVET"];
+    AlarmSifirla -> SensorOku [label="HAYIR"];
+    AlarmSifirlama -> SensorOku;
+}
