@@ -1,6 +1,3 @@
-İsim-Soyisim:Şevval Ekmen
-Okul No:250541080
-
 BAŞLA
 
   bakiye ← 5000            // Varsayılan bakiye
