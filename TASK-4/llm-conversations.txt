@@ -1,0 +1,124 @@
+Siz:öğrenci ders kayıt sisteminin tüm kontrollerini ve kurallarını modelleyin.
+Sistem Gereksinimleri:
+¨
+Öğrenci girisi (öğrenci no + şifre)
+Ders listesini görüntüleme (döngü)
+Her ders içn:
+Kontenjan kontrolü (koşul)
+¨
+On kosul dersi kontrolu (kosul)
+Zaman cakısması kontrolu (kosul)
+Kredi limiti kontrolu (toplam ≤ 35) (kosul)
+Ders ekleme/¸cıkarma (d¨ong¨u)
+Danışman onayı gerekli mi? (GPA ¡ 2.5 ise) (kosul)
+Kayıt ozeti gosterme ve kayıt onaylama  
+bunu bana pseudocode olarak yaz
+Tabii! İşte verdiğiniz gereksinimlere uygun şekilde öğrenci ders kayıt sistemi için detaylı bir pseudocode örneği:
+Başla
+    Başla Öğrenci Girişi
+        Girdi Öğrenci No
+        Girdi Şifre
+        Eğer Öğrenci Bilgileri Doğru ise
+            Başla Ders Listesini Görüntüle
+                Döngü Tüm Dersler için
+                    Göster Ders Bilgileri
+                Döngü Son
+            Bitir Ders Listesini Görüntüle
+
+            Başla Ders Seçimi
+                Döngü Ders Ekle/Çıkar işlemleri için
+                    Girdi Seçilen Ders
+
+                    Eğer Ders Eklemek İsteniyorsa
+                        Eğer Kontenjan Dolmuş ise
+                            Göster "Kontenjan dolu"
+                        Yoksa Eğer Ön Koşul Dersi Alınmamış ise
+                            Göster "Ön koşul dersi eksik"
+                        Yoksa Eğer Zaman Çakışması Var ise
+                            Göster "Zaman çakışması"
+                        Yoksa Eğer Kredi Limiti Aşılır ise
+                            Göster "Kredi limiti aşılıyor"
+                        Yoksa Eğer GPA < 2.5 ise
+                            Girdi Danışman Onayı
+                            Eğer Onay Alınmamış ise
+                                Göster "Danışman onayı gerekli"
+                            Yoksa
+                                Ders Ekle
+                        Yoksa
+                            Ders Ekle
+                    Yoksa Eğer Ders Çıkarılacaksa
+                        Ders Çıkar
+                    Bitir Eğer
+                Döngü Son
+            Bitir Ders Seçimi
+
+            Göster Kayıt Özeti
+            Onayla Kayıt
+        Yoksa
+            Göster "Giriş bilgileri hatalı"
+    Bitir Öğrenci Girişi
+Bitir
+Bu pseudocode:
+Giriş kontrolü,
+Ders listesini döngüyle görüntüleme,
+Kontenjan, ön koşul, zaman çakışması, kredi limiti kontrolleri,
+Danışman onayı ve
+Kayıt özeti & onayı adımlarını içeriyor.
+İstersen bunu ben sana Graphviz DOT akış diyagramı hâline de getirebilirim, böylece görsel olarak da ödevini teslim edebilirsin.
+Bunu yapmamı ister misin?
+Siz:bunu bana dot diline çevir
+digraph DersKayit {
+    rankdir=TB;
+    node [shape=box];
+
+    Basla [shape=oval, label="Başla"];
+    OgrenciGiris [shape=parallelogram, label="Öğrenci No ve Şifre Girişi"];
+    KontrolGiris [shape=diamond, label="Giriş Bilgileri Doğru mu?"];
+    DersListesi [shape=box, label="Ders Listesini Göster"];
+    DersSecimi [shape=box, label="Ders Seçimi (Ekle/Çıkar)"];
+    KontenjanKontrol [shape=diamond, label="Kontenjan Dolmuş mu?"];
+    OnKosulKontrol [shape=diamond, label="Ön Koşul Dersi Alınmış mı?"];
+    ZamanCakis [shape=diamond, label="Zaman Çakışması Var mı?"];
+    KrediKontrol [shape=diamond, label="Kredi Limiti Aşılıyor mu?"];
+    GPAKontrol [shape=diamond, label="GPA < 2.5 mi?"];
+    DanismanOnayi [shape=parallelogram, label="Danışman Onayı Al"];
+    DersEkle [shape=box, label="Dersi Ekle"];
+    DersCikar [shape=box, label="Dersi Çıkar"];
+    KayitOzeti [shape=parallelogram, label="Kayıt Özeti Göster"];
+    KayitOnay [shape=oval, label="Kayıt Onayla"];
+    HataGiris [shape=parallelogram, label="Giriş Bilgileri Hatalı"];
+    Bitir [shape=oval, label="Bitir"];
+
+    Basla -> OgrenciGiris -> KontrolGiris;
+    KontrolGiris -> DersListesi [label="Evet"];
+    KontrolGiris -> HataGiris [label="Hayır"];
+    HataGiris -> Bitir;
+
+    DersListesi -> DersSecimi;
+
+    DersSecimi -> KontenjanKontrol;
+    KontenjanKontrol -> DersEkle [label="Hayır"];
+    KontenjanKontrol -> DersSecimi [label="Evet"];  // Hata mesajı DersSecimi içinde gösterilecek
+
+    DersEkle -> OnKosulKontrol;
+    OnKosulKontrol -> DersEkle [label="Evet"];
+    OnKosulKontrol -> DersSecimi [label="Hayır"];
+
+    DersEkle -> ZamanCakis;
+    ZamanCakis -> DersSecimi [label="Evet"];
+    ZamanCakis -> KrediKontrol [label="Hayır"];
+
+    KrediKontrol -> DersSecimi [label="Evet"];
+    KrediKontrol -> GPAKontrol [label="Hayır"];
+
+    GPAKontrol -> DanismanOnayi [label="Evet"];
+    GPAKontrol -> DersEkle [label="Hayır"];
+
+    DanismanOnayi -> DersEkle [label="Onay Alındı"];
+    DanismanOnayi -> DersSecimi [label="Onay Alınmadı"];
+
+    DersEkle -> KayitOzeti -> KayitOnay -> Bitir;
+}
+
+
+
