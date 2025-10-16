@@ -13,4 +13,41 @@ digraph DersKayit {
     KrediKontrol [shape=diamond, label="Kredi Limiti Aşılıyor mu?"];
     GPAKontrol [shape=diamond, label="GPA < 2.5 mi?"];
     DanismanOnayi [shape=parallelogram, label="Danışman Onayı Al"];
-    DersEkle [shape=box, label="Dersi E]()
+    DersEkle [shape=box, label="Dersi Ekle"];
+    DersCikar [shape=box, label="Dersi Çıkar"];
+    KayitOzeti [shape=parallelogram, label="Kayıt Özeti Göster"];
+    KayitOnay [shape=oval, label="Kayıt Onayla"];
+    HataGiris [shape=parallelogram, label="Giriş Bilgileri Hatalı"];
+    Bitir [shape=oval, label="Bitir"];
+
+    Basla -> OgrenciGiris -> KontrolGiris;
+    KontrolGiris -> DersListesi [label="Evet"];
+    KontrolGiris -> HataGiris [label="Hayır"];
+    HataGiris -> Bitir;
+
+    DersListesi -> DersSecimi;
+
+    DersSecimi -> KontenjanKontrol;
+    KontenjanKontrol -> DersEkle [label="Hayır"];
+    KontenjanKontrol -> DersSecimi [label="Evet"];  // Hata mesajı DersSecimi içinde gösterilecek
+
+    DersEkle -> OnKosulKontrol;
+    OnKosulKontrol -> DersEkle [label="Evet"];
+    OnKosulKontrol -> DersSecimi [label="Hayır"];
+
+    DersEkle -> ZamanCakis;
+    ZamanCakis -> DersSecimi [label="Evet"];
+    ZamanCakis -> KrediKontrol [label="Hayır"];
+
+    KrediKontrol -> DersSecimi [label="Evet"];
+    KrediKontrol -> GPAKontrol [label="Hayır"];
+
+    GPAKontrol -> DanismanOnayi [label="Evet"];
+    GPAKontrol -> DersEkle [label="Hayır"];
+
+    DanismanOnayi -> DersEkle [label="Onay Alındı"];
+    DanismanOnayi -> DersSecimi [label="Onay Alınmadı"];
+
+    DersEkle -> KayitOzeti -> KayitOnay -> Bitir;
+}
+
