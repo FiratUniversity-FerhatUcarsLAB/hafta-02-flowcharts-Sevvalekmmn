@@ -1,6 +1,3 @@
-İsim Soyisim:Şevval Ekmen
-Okul No:250541080
-
 ATM para çekme sistemi için detaylı pseudocode yazmanı istiyorum. Şunları içermeli:PIN doğrulama (3 hak), bakiye kontrolü, tutar kontrolü, işlem tekrarı seçeneği. Tüm adımları başla, oku, yaz, eğer-ise,döngü yapılarıyla yaz
 
 ChatGPT:
